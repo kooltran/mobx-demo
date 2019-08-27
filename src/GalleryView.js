@@ -3,21 +3,20 @@ import galleryStore from './stores/GalleryStore'
 import { observer } from 'mobx-react';
 import Form from './Form'
 import 'bootstrap/dist/css/bootstrap.css';
+import { connect } from 'react-redux'
+import { fetchImages } from './actions/galleryAction'
 
 
-@observer
 class GalleryView extends React.Component {
     componentWillMount() {
-        galleryStore.fetchImages('mountains')
+        this.props.fetchImages('mountains')
     }
-
     render() {
-        const { tern, status, images } = galleryStore;
-        console.log(images)
+        const { images } = this.props;
         return (
             <div className="container">
                 <div className="row">
-                    <Form galleryStore={galleryStore} />
+                    <Form fetchImages={this.props.fetchImages} />
                     <div className="gallery-list row">
                         {
                             images.map(image => {
@@ -35,4 +34,23 @@ class GalleryView extends React.Component {
     }
 }
 
-export default GalleryView;
+const mapStateToProps = state => {
+    return {
+        term: state.term,
+        images: state.images,
+        status: state.status
+    };
+};
+
+const mapDispatchToProps = dispatch => {
+    return {
+        fetchImages: term => {
+            dispatch(fetchImages(term));
+        }
+    };
+};
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(GalleryView);

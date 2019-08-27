@@ -1,14 +1,10 @@
 import React from 'react'
-import { inject, observer } from 'mobx-react';
 
-
-inject('GalleryStore');
-@observer
 class Form extends React.Component {
     onSubmitForm = (e) => {
         e.preventDefault();
         const term = this.inputForm.value;
-        this.props.galleryStore.fetchImages(term)
+        this.props.fetchImages(term)
     }
 
     render() {
