@@ -45,6 +45,10 @@ class TodoStore {
       ? this.todos.filter(todo => this.showCompleted || todo.completed)
       : this.todos;
   }
+
+  @computed get completedCount() {
+    return this.todos.filter(todo => todo.completed).length;
+  }
 }
 
 const store = new TodoStore();

@@ -25,42 +25,56 @@ class TodoList extends React.Component {
 
   render() {
     const { inputValue } = this.state;
+    const {
+      todoCount,
+      filteredTodos,
+      showCompleted,
+      toggleFilterCompleted,
+      clearAll,
+      toggleTodo,
+      completedCount
+    } = TodoStore;
     return (
-      <div>
-        <h2>You have {TodoStore.todoCount} todo(s)</h2>
+      <div className="container">
+        <h2>You have {todoCount} todo(s)</h2>
         <form onSubmit={this.handleSubmit}>
           <input
             type="text"
-            placeholder="Enter cat"
+            placeholder="Enter todo"
             onChange={this.handleChange}
             value={inputValue}
           />
-          <button disabled={!inputValue}>Add Cat</button>
+          <button disabled={!inputValue}>Add Todo</button>
         </form>
 
-        <ul>
-          {TodoStore.filteredTodos.map(todo => {
+        <ul className="todo-list">
+          {filteredTodos.map(todo => {
             return (
               <li key={todo.id}>
-                <input
-                  type="checkbox"
-                  checked={todo.completed}
-                  onChange={() => TodoStore.toggleTodo(todo.id)}
-                />
-                {todo.value}
+                <label className="checkbox-label">
+                  <input
+                    type="checkbox"
+                    checked={todo.completed}
+                    onChange={() => toggleTodo(todo.id)}
+                  />
+                  <span>{todo.value}</span>
+                </label>
               </li>
             );
           })}
         </ul>
-        <label>
+        <label className="checkbox-label">
           <input
             type="checkbox"
-            checked={!TodoStore.showCompleted}
-            onChange={TodoStore.toggleFilterCompleted}
+            checked={!showCompleted}
+            onChange={toggleFilterCompleted}
           />
-          Toggle Checkbox
+          <span>Toggle Completed</span>
         </label>
-        <button onClick={TodoStore.clearAll}>Clear All</button>
+        <button onClick={clearAll}>Clear All</button>
+        <div>
+          You have {completedCount}/{todoCount} completed todo
+        </div>
       </div>
     );
   }
